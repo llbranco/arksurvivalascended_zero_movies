@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+clear
+echo "Creating zero byte dummy files instead of movies..."
+
+for s in \
+"Aberration_in.bk2" \
+"Aberration_out.bk2" \
+"ARKTitle.bk2" \
+"ARKTitleMenu_1080.bk2" \
+"ARKTitleMenu_2160.bk2" \
+"ASA_Background_Loop.bk2" \
+"ASA_Extinction_ASC_4K.bk2" \
+"ASA_Logo_Intro.bk2" \
+"ASA_Logo_Loop.bk2" \
+"ASE_AB_ASC_4K.bk2" \
+"BTT_Aberration_in.bk2" \
+"BTT_Aberration_note_01.bk2" \
+"BTT_Aberration_note_02.bk2" \
+"BTT_Aberration_note_03.bk2" \
+"BTT_Aberration_note_04.bk2" \
+"BTT_Aberration_note_05.bk2" \
+"BTT_Aberration_note_06.bk2" \
+"BTT_Aberration_note_07.bk2" \
+"BTT_Aberration_note_08.bk2" \
+"BTT_Aberration_note_09.bk2" \
+"BTT_Aberration_note_10.bk2" \
+"BTT_Aberration_out.bk2" \
+"BTT_Extinction_note_01.bk2" \
+"BTT_Extinction_note_02.bk2" \
+"BTT_Extinction_note_03.bk2" \
+"BTT_Extinction_note_04.bk2" \
+"BTT_Extinction_note_05.bk2" \
+"BTT_Extinction_note_06.bk2" \
+"BTT_Extinction_note_07.bk2" \
+"BTT_Extinction_note_08.bk2" \
+"BTT_Extinction_note_09.bk2" \
+"BTT_Extinction_note_10.bk2" \
+"BTT_GameplayPromo_1.bk2" \
+"BTT_ScorchedEarth_in.bk2" \
+"BTT_ScorchedEarth_note_01.bk2" \
+"BTT_ScorchedEarth_note_02.bk2" \
+"BTT_ScorchedEarth_note_03.bk2" \
+"BTT_ScorchedEarth_note_04.bk2" \
+"BTT_ScorchedEarth_note_05.bk2" \
+"BTT_ScorchedEarth_note_06.bk2" \
+"BTT_ScorchedEarth_note_07.bk2" \
+"BTT_ScorchedEarth_note_08.bk2" \
+"BTT_ScorchedEarth_note_09.bk2" \
+"BTT_ScorchedEarth_note_10.bk2" \
+"BTT_ScorchedEarth_out.bk2" \
+"BTT_TheIsland_in.bk2" \
+"BTT_TheIsland_out.bk2" \
+"BTT_Wasteland_in.bk2" \
+"BTT_Wasteland_out.bk2" \
+"Dreadmare.bk2" \
+"Extinction_in.bk2" \
+"ExtinctionEnding-FH.bk2" \
+"ExtinctionEnding-MH.bk2" \
+"Fear2024_MenuBG_Wmusic.bk2" \
+"GSGIntro.bk2" \
+"InstinctGames_Logo.bk2" \
+"LC_TitleCard_817x1290.bk2" \
+"LCStinger.bk2" \
+"LoadingScreen.bk2" \
+"ScorchedEarth_In.bk2" \
+"ScorchedEarth_out.bk2" \
+"TheIsland_in.bk2" \
+"TheIsland_out.bk2" \
+"UE4_Logo.bk2" \
+"WildcardSplash.bk2"
+do
+    : > "$s"
+done
