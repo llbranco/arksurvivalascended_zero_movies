@@ -1,67 +1,43 @@
-for %%s in (
-Aberration_in.bk2
-Aberration_out.bk2
-ARKTitle.bk2
-ARKTitleMenu_1080.bk2
-ARKTitleMenu_2160.bk2
-ASA_Background_Loop.bk2
-ASA_Extinction_ASC_4K.bk2
-ASA_Logo_Intro.bk2
-ASA_Logo_Loop.bk2
-ASE_AB_ASC_4K.bk2
-BTT_Aberration_in.bk2
-BTT_Aberration_note_01.bk2
-BTT_Aberration_note_02.bk2
-BTT_Aberration_note_03.bk2
-BTT_Aberration_note_04.bk2
-BTT_Aberration_note_05.bk2
-BTT_Aberration_note_06.bk2
-BTT_Aberration_note_07.bk2
-BTT_Aberration_note_08.bk2
-BTT_Aberration_note_09.bk2
-BTT_Aberration_note_10.bk2
-BTT_Aberration_out.bk2
-BTT_Extinction_note_01.bk2
-BTT_Extinction_note_02.bk2
-BTT_Extinction_note_03.bk2
-BTT_Extinction_note_04.bk2
-BTT_Extinction_note_05.bk2
-BTT_Extinction_note_06.bk2
-BTT_Extinction_note_07.bk2
-BTT_Extinction_note_08.bk2
-BTT_Extinction_note_09.bk2
-BTT_Extinction_note_10.bk2
-BTT_GameplayPromo_1.bk2
-BTT_ScorchedEarth_in.bk2
-BTT_ScorchedEarth_note_01.bk2
-BTT_ScorchedEarth_note_02.bk2
-BTT_ScorchedEarth_note_03.bk2
-BTT_ScorchedEarth_note_04.bk2
-BTT_ScorchedEarth_note_05.bk2
-BTT_ScorchedEarth_note_06.bk2
-BTT_ScorchedEarth_note_07.bk2
-BTT_ScorchedEarth_note_08.bk2
-BTT_ScorchedEarth_note_09.bk2
-BTT_ScorchedEarth_note_10.bk2
-BTT_ScorchedEarth_out.bk2
-BTT_TheIsland_in.bk2
-BTT_TheIsland_out.bk2
-BTT_Wasteland_in.bk2
-BTT_Wasteland_out.bk2
-Dreadmare.bk2
-Extinction_in.bk2
-ExtinctionEnding-FH.bk2
-ExtinctionEnding-MH.bk2
-Fear2024_MenuBG_Wmusic.bk2
-GSGIntro.bk2
-InstinctGames_Logo.bk2
-LC_TitleCard_817x1290.bk2
-LCStinger.bk2
-LoadingScreen.bk2
-ScorchedEarth_In.bk2
-ScorchedEarth_out.bk2
-TheIsland_in.bk2
-TheIsland_out.bk2
-UE4_Logo.bk2
-WildcardSplash.bk2
-) do copy dummy.bk2 "%%s"
+@echo off
+setlocal enabledelayedexpansion
+
+REM ------------------------------------------------------------
+REM Script para substituir todos os arquivos .bk2 de uma pasta
+REM pelo arquivo dummy.bk2 baixado do GitHub.
+REM ------------------------------------------------------------
+
+set "DUMMY_URL=https://raw.githubusercontent.com/llbranco/arksurvivalascended_zero_movies/main/dummy.bk2"
+set "DUMMY_FILE=dummy.bk2"
+
+echo Baixando %DUMMY_FILE% ...
+
+REM Usa curl (nativo no Windows 10/11). -L segue redirecionamentos.
+curl -L -o "%DUMMY_FILE%" "%DUMMY_URL%"
+
+REM Verifica se o download foi bem-sucedido
+if not exist "%DUMMY_FILE%" (
+    echo ERRO: Falha ao baixar %DUMMY_FILE%.
+    exit /b 1
+)
+
+REM Verifica se o arquivo nao esta vazio (tamanho 0)
+for %%A in ("%DUMMY_FILE%") do set "DUMMY_SIZE=%%~zA"
+if "%DUMMY_SIZE%"=="0" (
+    echo ERRO: %DUMMY_FILE% esta vazio.
+    exit /b 1
+)
+
+echo Substituindo todos os arquivos .bk2 na pasta atual...
+
+REM Percorre todos os .bk2 no diretorio atual
+for %%F in (*.bk2) do (
+    REM Nao sobrescreve o proprio dummy
+    if /I not "%%F"=="%DUMMY_FILE%" (
+        copy /Y "%DUMMY_FILE%" "%%F" >nul
+        echo   -^> %%F substituido
+    )
+)
+
+echo Concluido. Todos os .bk2 foram substituidos pelo dummy.
+endlocal
+pause
