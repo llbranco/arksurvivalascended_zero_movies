@@ -1,41 +1,63 @@
 #!/usr/bin/env bash
 
 # ------------------------------------------------------------
-# Script para substituir todos os arquivos .bk2 de uma pasta
-# pelo arquivo dummy.bk2 baixado do GitHub.
+# Script para substituir todos os arquivos .bk2 (recursivamente)
+# em Mods, Saved/Cache/Movies e Content/Movies pelo dummy.bk2.
+# Pode ser executado de qualquer lugar — os caminhos são
+# resolvidos a partir da pasta onde este script está.
 # ------------------------------------------------------------
 
-set -euo pipefail   # Aborta em erro, variável não definida ou pipe failure
+set -euo pipefail
 
-# URL RAW do arquivo dummy.bk2 (o link "blob" do GitHub não serve para download direto)
 DUMMY_URL="https://raw.githubusercontent.com/llbranco/arksurvivalascended_zero_movies/main/dummy.bk2"
 DUMMY_FILE="dummy.bk2"
 
+# Pasta onde este script está (funciona mesmo via symlink)
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
+# Pastas-alvo, relativas ao SCRIPT_DIR (assumindo que ele está em
+# ARK Survival Ascended/ShooterGame/Content/Movies/)
+DEFAULT_DIRS=(
+  "$SCRIPT_DIR"                                              # Content/Movies
+  "$SCRIPT_DIR/../../../Binaries/Win64/ShooterGame/Mods"     # todos os mods
+  "$SCRIPT_DIR/../../../Saved/Cache/Movies"                  # cache de vídeos
+)
+
+# Baixa o dummy no diretório do script (não no pwd)
+cd "$SCRIPT_DIR"
 echo "Baixando $DUMMY_FILE ..."
-# -L segue redirecionamentos; -o salva com o nome desejado
 curl -L -o "$DUMMY_FILE" "$DUMMY_URL"
 
-# Verifica se o download foi bem-sucedido (arquivo existe e não está vazio)
 if [[ ! -s "$DUMMY_FILE" ]]; then
     echo "ERRO: Falha ao baixar $DUMMY_FILE ou o arquivo está vazio." >&2
     exit 1
 fi
 
-echo "Substituindo todos os arquivos .bk2 na pasta atual..."
+# Usa pastas passadas por argumento; se não houver, usa as padrão.
+if [[ $# -gt 0 ]]; then
+    DIRS=("$@")
+else
+    DIRS=("${DEFAULT_DIRS[@]}")
+fi
 
-# Percorre todos os arquivos com extensão .bk2 no diretório atual
-for bk2 in *.bk2; do
-    # Se não houver nenhum arquivo .bk2, o glob não expande e o loop tenta usar o literal "*.bk2"
-    [[ -e "$bk2" ]] || continue
+echo "Substituindo todos os arquivos .bk2 nas pastas..."
 
-    # Não sobrescreve o próprio dummy (caso ele já exista na pasta)
-    if [[ "$bk2" == "$DUMMY_FILE" ]]; then
+for dir in "${DIRS[@]}"; do
+    if [[ ! -d "$dir" ]]; then
+        echo "AVISO: pasta não encontrada, pulando: $dir" >&2
         continue
     fi
 
-    # Copia o dummy sobre o arquivo original, preservando o nome
-    cp -f "$DUMMY_FILE" "$bk2"
-    echo "  -> $bk2 substituído"
+    # Percorre recursivamente todos os .bk2 (inclui subpastas de Mods)
+    while IFS= read -r -d '' bk2; do
+        # Não sobrescreve o próprio dummy
+        if [[ "$(basename "$bk2")" == "$DUMMY_FILE" ]]; then
+            continue
+        fi
+
+        cp -f "$DUMMY_FILE" "$bk2"
+        echo "  -> $bk2 substituído"
+    done < <(find "$dir" -type f -name '*.bk2' -print0)
 done
 
 echo "Concluído. Todos os .bk2 foram substituídos pelo dummy."
