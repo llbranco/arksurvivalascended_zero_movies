@@ -1,11 +1,12 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM ------------------------------------------------------------
-REM Substitui recursivamente todos os .bk2 em Mods, Saved/Cache/Movies
-REM e Content/Movies pelo dummy.bk2 baixado do GitHub.
-REM Caminhos resolvidos a partir da pasta do script.
-REM ------------------------------------------------------------
+:: ------------------------------------------------------------
+:: Substitui recursivamente todos os .bk2 em Mods, Saved/Cache/Movies
+:: e Content/Movies pelo dummy.bk2 baixado do GitHub.
+:: Caminhos resolvidos a partir da pasta do script.
+:: o script PRECISA estar na pasta ShooterGame/Content/Movies/
+:: ------------------------------------------------------------
 
 set "DUMMY_URL=https://raw.githubusercontent.com/llbranco/arksurvivalascended_zero_movies/main/dummy.bk2"
 set "DUMMY_FILE=dummy.bk2"
